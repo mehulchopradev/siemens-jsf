@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layouts/master.xhtml">
+    <f:metadata>
+    	<f:viewParam name="reg" value="#{rb.registerStatus}"/>
+    	
+    </f:metadata>
+    <ui:define name="title">
+    	Welcome - Login
+    </ui:define>
+    <ui:define name="content">
+    	<ui:fragment rendered="#{rb.regSuccess}">
+    		<font color="green">
+    			Ty for registering, #{rb.username}
+    		</font>
+    	</ui:fragment>
+    	<h2>Authenticate Here</h2>
+		<h:form>
+			<p:messages/>
+			<h:panelGrid columns="1">
+				<!-- <h:inputText pt:placeholder="#{msgs.username}" value="#{loginBean.username}"/> -->
+				<p:inputText id="username" value="#{loginBean.username}">
+				</p:inputText>
+				<p:watermark value="Enter Username" for="username"/>
+				<!-- <h:inputSecret pt:placeholder="#{msgs.password}" value="#{loginBean.password}"/> -->
+				<p:password value="#{loginBean.password}" id="password">
+				</p:password>
+				<p:watermark value="Enter Password" for="password"/>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Login" action="#{loginBean.authenticate}" ajax="false"/>
+					<!-- request implicit object. All J2EE implicit objects available -->
+					<a href="#{request.contextPath}/public/register.jsf">Register Here</a>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+    </ui:define>
+</ui:composition>

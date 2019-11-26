@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:mf="http://myfaces.apache.org/commons/validators"
+      template="/layouts/master.xhtml">
+    <ui:define name="title">
+    	Welcome - Register
+    </ui:define>
+    <ui:define name="content">
+    	<h2>Register Here</h2>
+		<h:form id="registerForm">
+			<!-- <h:messages styleClass="error"/> -->
+			<h:panelGrid columns="1">
+				<h:inputText
+					pt:placeholder="#{msgs.username}"
+					value="#{rb.username}"
+					required="true"
+					requiredMessage="Username is required"
+					validatorMessage="Should be proper email"
+					id="username">
+					<mf:validateEmail/>
+				</h:inputText>
+				<h:message for="username" styleClass="error"/>
+				<h:inputSecret
+					pt:placeholder="#{msgs.password}"
+					value="#{rb.password}"
+					required="true"
+					requiredMessage="Password is required"
+					converterMessage="Password must be numeric"
+					validatorMessage="Password must be minimum 4 and maximum 8 in length"
+					id="password">
+					<f:validateLength minimum="4" maximum="8"/>
+					<!-- <f:validateRegex pattern="^[0-9]{4,8}$"/> -->
+				</h:inputSecret>
+				<h:message for="password" styleClass="error"/>
+				<h:inputSecret
+					pt:placeholder="Enter password again"
+					required="true"
+					requiredMessage="Type password again"
+					id="password2"
+					value="#{rb.confirmPassword}"
+					>
+					<mf:validateCompareTo operator="eq" forId="password" message="Both passwords must match"/>
+				</h:inputSecret>
+				<h:message for="password2"/>
+				Gender
+				<h:selectOneRadio value="#{rb.gender}">
+					<f:selectItem itemLabel="Male" itemValue="M"/>
+					<f:selectItem itemLabel="Female" itemValue="F"/>
+				</h:selectOneRadio>
+				Country
+				<h:selectOneMenu value="#{rb.country}">
+					<!-- cb.getCountries() -->
+					<!-- country.getName() -->
+					<!-- coountry.getCode() -->
+					<!-- <f:selectItems
+						value="#{cb.countries}"
+						var="country"
+						itemLabel="#{country.name}"
+						itemValue="#{country.code}"/> -->
+					<f:selectItems
+						value="#{cb.countriesMap}"/>
+					<f:ajax execute="@this" render="aadhar"/>
+				</h:selectOneMenu>
+				<h:panelGroup id="aadhar">
+					<h:inputText pt:placeholder="Enter Aadhar Number" rendered="#{rb.adharVisible}"/>
+				</h:panelGroup>
+				<h:commandLink value="Married ?" immediate="true" actionListener="#{rb.onMarriedClick}"></h:commandLink>
+				<h:panelGroup>
+					<h:inputText pt:placeholder="Enter Spouse name" rendered="#{rb.spouseNameVisible}"/>
+				</h:panelGroup>
+				<h:commandButton value="Register" action="#{rb.register}"/>
+			</h:panelGrid>
+		</h:form>
+    </ui:define>
+</ui:composition>
